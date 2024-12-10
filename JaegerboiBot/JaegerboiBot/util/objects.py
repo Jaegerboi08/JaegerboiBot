@@ -122,6 +122,17 @@ class BotCommandAgent(BaseAgent):
         self.renderer.end_rendering()
         # send our updated controller back to rlbot
         return self.controller
+    def get_closest_boost(self):
+        ready_boosts = [boost for boost in self.boosts if boost.active and boost.large]
+        closest_boost = None
+        closest_distance = 10000
+        for boost in ready_boosts:
+            distance = (self.me.location - boost.location).magnitude()
+            if closest_boost is None or distance < closest_distance:
+                closest_boost = boost
+                closest_distance = distance
+        return closest_boost
+
 
     def run(self):
         # override this with your strategy code
